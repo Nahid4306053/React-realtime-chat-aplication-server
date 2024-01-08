@@ -12,6 +12,16 @@ const {
 const Pepoles = new model("People", Peoplescema);
 const sendMeassge = new model("Meassge", messageScema);
 const Convertion = new model("convertions", ConvertionsScema);
+const Pusher = require("pusher");
+
+const pusher = new Pusher({
+  appId: "1730567",
+  key: "a000b8eeb634d3351df4",
+  secret: "12746e52529322c07b09",
+  cluster: "ap2",
+  useTLS: true
+})
+
 
 function fileuploader(subfolder, minetypes, limits, errmsg) {
   const multer = require('multer');
@@ -45,8 +55,10 @@ function fileuploader(subfolder, minetypes, limits, errmsg) {
   return upload;
 }
 
-const setMessageInDatabase = async (req, res) => {
+const setMessageInDatabase = async (req, res) => { 
+
   try {
+  
     if (req.body.recever) {
       const matchedConvertion = await Convertion.findOne({
         $or: [{
@@ -76,10 +88,8 @@ const setMessageInDatabase = async (req, res) => {
 
 
         let dataForsaveinDatabase;
-        if (!isEmpty(req.files)) {
-          const attachments = req.files.map((ele) => {
-            return ele.filename;
-          })
+        if (req.body.attachments) {
+          const attachments = req.body.attachments;
           dataForsaveinDatabase = {
             message: req.body.message,
             attachments: attachments,
@@ -100,15 +110,16 @@ const setMessageInDatabase = async (req, res) => {
           res.status(200).json({
             msg: "Send Successfully"
           })
-          global.io.emit("new_message", {
+          pusher.trigger("chitChat", "new-message", {
             ConvertionID: matchedConvertion._id.toString(),
             message: saveMessage
-          })
-
+          });
+  
+          
         } else {
           res.status(200).json({
             error: "There is a server side error"
-          })
+          }) 
         }
 
       } else {
@@ -125,7 +136,7 @@ const setMessageInDatabase = async (req, res) => {
     res.status(500).json({
       error: "There is server side errror"
     })
-    console.log(err);
+    console.log(err); 
   }
 
 }

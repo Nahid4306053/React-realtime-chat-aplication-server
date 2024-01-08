@@ -2,7 +2,8 @@ const express = require('express')
 const login = express.Router();
 const { model } = require('mongoose');
 const { chekUser  } = require('../controller/loginRouterController')
-const chekUserdetails = require("../middlewares/common/chekUserdetails")
+const chekUserdetails = require("../middlewares/common/chekuserdetails")
+const dotenv = require('dotenv').config();
 const {
   logindatavalidetion,
   getvalidetionResult  

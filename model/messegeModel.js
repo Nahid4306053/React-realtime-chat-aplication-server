@@ -3,10 +3,10 @@ const { Schema } = require("mongoose");
 
 const messageModel = Schema({
     message : {
-       type:String
+       type:String 
     },  
     attachments : {
-     type : Array,
+      type:String 
     },               
     sender:{
       _id: String,

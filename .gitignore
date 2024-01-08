@@ -1,0 +1,43 @@
+# Node.js dependencies
+node_modules/
+
+# Serverless Framework
+.serverless/
+
+# Environment variables
+.env
+
+# Log files
+*.log
+
+# Visual Studio Code settings
+.vscode/
+
+# Mac OS system files
+.DS_Store
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+
+# Dependency lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Serverless Express specific
+# If you use different deployment directories, customize this line
+.serverless/*
+
+# Serverless deployment artifacts
+*.zip
+*.tar
+*.gz
+
+# Serverless AWS Lambda layers
+nodejs/node_modules
+
+# Serverless AWS CloudFormation files
+cloudformation-template-update-stack.json
+.vercel

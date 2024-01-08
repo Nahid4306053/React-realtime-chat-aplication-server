@@ -4,8 +4,8 @@ const { isEmpty } = require('lodash');
 const { compareSync } = require('bcryptjs');
 const { sign ,verify } = require('jsonwebtoken');
 const Pepoles = new model("People",peopleScema)
-
-
+const dotenv = require('dotenv')
+dotenv.config();
 const chekUser = async (req ,res ,next)=>{
    try{
       const { identy, password } = req.body;
@@ -35,12 +35,17 @@ const chekUser = async (req ,res ,next)=>{
 
           res.cookie(process.env.COOKIE_NAME,token,{
             maxAge:process.env.EXPIRE_TIME,
+            httpOnly: true,
             signed: true,
-            httpOnly: true
+            secure: true,
+            sameSite: "none"
           })
 
-         res.status(200).json({success:{
-            data: data
+         res.json({success:{
+            data: data ,
+            token : token,
+            time: process.env.EXPIRE_TIME,
+            cookieName:process.env.COOKIE_NAME,
          }})    
         }   
         else{
@@ -53,6 +58,11 @@ const chekUser = async (req ,res ,next)=>{
       }
    }
    catch(err){
+   req.status(500).json({
+      error:{
+         server:"There is serevr side error"
+      }
+   })
    console.log(err)
    }
 }

@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "app.js",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "/socket.io",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "app.js",
+      "methods": ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+      "headers": {
+        "Content-Security-Policy": "default-src 'none'; img-src 'self' data:;"
+      }
+    },
+    {
+      "src": "/socket.io",
+      "dest": "/socket.io"
+    }
+  ]
+}
